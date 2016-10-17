@@ -1,0 +1,32 @@
+<div class="jumbotron">
+  <h1>To Do</h1>
+  <p class="lead">
+    A handy way of keeping your life straight.
+  </p>
+</div>
+
+<div class="row marketing">
+  <label>Hide completed items:
+    <input type="checkbox" ng-model="hideComplete" ng-click="switchFilter()">
+  </label>
+  <div ng-repeat="item in displayList" class="panel">
+    <div class="panel-heading" ng-class="getBackgroundColor(item)">
+      {{item.description}}
+    </div>
+    <div class="panel-body">
+      {{item.due | date : 'MM/dd/yyyy'}}
+      <div class="pull-right">
+        <button ng-click="toggleComplete(item)">Toggle Complete</button>
+        <button ng-click="remove(item)">Remove From List</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <form novalidate class="simple-form">
+    To do item: <input type="text" ng-model="item.description" placeholder="Item description here"></input><br />
+    Due date: <input type="text" ng-model="item.due" placeholder="MM/dd/yyyy"></input><br />
+    <input type="submit" ng-click="update(item)" value="Save"></input>
+  </form>
+</div>
