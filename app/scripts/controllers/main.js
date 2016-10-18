@@ -8,18 +8,14 @@
  * Controller of the todoApp
  */
 angular.module('todoApp')
-  .controller('MainCtrl', function ($scope, localStorageService, saveItemService) {
-    $scope.localStorageService = localStorageService;
+  .controller('MainCtrl', function ($scope, saveItemService) {
     $scope.saveItemService = saveItemService;
     $scope.hideComplete = false;
 
     $scope.populateItems = function() {
       $scope.toDoList = [];
-      var keys = $scope.localStorageService.keys();
-      for (var i = 0; i < keys.length; i++) {
-        var item = $scope.localStorageService.get(keys[i]);
-        $scope.toDoList.push(item);
-      }
+
+      $scope.toDoList = $scope.saveItemService.get();
 
       $scope.toDoList.sort(function(a,b) {
         if (new Date(a.due) === new Date(b.due)) return new Date(a.createdDate) - new Date(b.createdDate);
@@ -44,12 +40,12 @@ angular.module('todoApp')
 
     $scope.save = function(item) {
       var re = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
-      if (newItem.due && !re.test(newItem.due)) {
-        alert('Invalid date format: ' + newItem.due);
+      if (item.due && !re.test(item.due)) {
+        alert('Invalid date format: ' + item.due);
         return;
       }
 
-      $scope.saveItemService.save(item);
+      $scope.saveItemService.saveNewItem(item);
 
       item.description = '';
       item.due = '';

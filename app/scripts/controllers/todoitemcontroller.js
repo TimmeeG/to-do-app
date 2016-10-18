@@ -8,8 +8,7 @@
  * Controller of the todoApp
  */
 angular.module('todoApp')
-  .controller('ToDoItemCtrl', function ($scope, localStorageService, saveItemService) {
-    $scope.localStorageService = localStorageService;
+  .controller('ToDoItemCtrl', function ($scope, saveItemService) {
     $scope.saveItemService = saveItemService;
 
     $scope.currentDate = new Date();
@@ -35,7 +34,7 @@ angular.module('todoApp')
         return;
       }
 
-      $scope.saveItemService.save(item);
+      $scope.saveItemService.updateItem(item);
 
       $scope.editable = false;
 
@@ -45,11 +44,11 @@ angular.module('todoApp')
 
     $scope.toggleComplete = function(item) {
       item.completed = !item.completed;
-      $scope.localStorageService.set(item.key, item)
+      $scope.saveItemService.updateItem(item);
     };
 
     $scope.remove = function(item) {
-      $scope.localStorageService.remove(item.key);
+      $scope.saveItemService.removeItem(item);
     };
 
     $scope.getBackgroundColor = function(item) {
