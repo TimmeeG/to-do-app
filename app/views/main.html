@@ -14,10 +14,12 @@
   </div>
 </div>
 
-<div>
+<div class="submission">
   <form novalidate class="simple-form">
-    To do item: <input type="text" ng-model="item.description" placeholder="Item description here"></input><br />
-    Due date: <input type="text" ng-model="item.due" placeholder="MM/dd/yyyy"></input><br />
-    <input type="submit" ng-click="update(item)" value="Save"></input>
+    <div>Add New To Do Item:</div>
+    <input type="text" ng-model="item.description" placeholder="Item description here"></input>
+    <div>Due date:</div>
+    <input type="text" ng-model="item.due" placeholder="MM/dd/yyyy"></input><br />
+    <input type="submit" ng-click="save(item)" ng-disabled="!item.description" value="Save"></input>
   </form>
 </div>

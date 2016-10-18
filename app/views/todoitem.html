@@ -1,10 +1,24 @@
-<div class="panel-heading" ng-class="getBackgroundColor(item)">
-  {{item.description}}
+<div ng-show="!editable">
+  <div class="panel-heading" ng-class="getBackgroundColor(item)">
+    {{item.description}}
+  </div>
+  <div class="panel-body">
+    {{item.due | date : 'MM/dd/yyyy'}}
+    <div class="pull-right">
+      <button ng-click="edit(item)">Edit Item</button>
+      <button ng-click="toggleComplete(item)">Toggle Complete</button>
+      <button ng-click="remove(item)">Remove From List</button>
+    </div>
+  </div>
 </div>
-<div class="panel-body">
-  {{item.due | date : 'MM/dd/yyyy'}}
-  <div class="pull-right">
-    <button ng-click="toggleComplete(item)">Toggle Complete</button>
-    <button ng-click="remove(item)">Remove From List</button>
+<div ng-show="editable">
+  <div class="panel-heading" ng-class="getBackgroundColor(item)">
+    <input type="text" ng-model="item.description" value={{item.description}}></input>
+  </div>
+  <div class="panel-body">
+    <input type="text" ng-model="item.due" value="{{item.due}}" placeholder="MM/dd/yyyy"></input>
+    <div class="pull-right">
+      <button ng-click="saveItem(item)" ng-disabled="!item.description">Save Item</button>
+      </div>
   </div>
 </div>

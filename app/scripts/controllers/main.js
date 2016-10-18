@@ -8,9 +8,9 @@
  * Controller of the todoApp
  */
 angular.module('todoApp')
-  .controller('MainCtrl', function ($scope, localStorageService) {
+  .controller('MainCtrl', function ($scope, localStorageService, saveItemService) {
     $scope.localStorageService = localStorageService;
-    //$scope.localStorageService.clearAll();
+    $scope.saveItemService = saveItemService;
     $scope.hideComplete = false;
 
     $scope.populateItems = function() {
@@ -20,6 +20,11 @@ angular.module('todoApp')
         var item = $scope.localStorageService.get(keys[i]);
         $scope.toDoList.push(item);
       }
+
+      $scope.toDoList.sort(function(a,b) {
+        if (new Date(a.due) === new Date(b.due)) return new Date(a.createdDate) - new Date(b.createdDate);
+        else return new Date(a.due) - new Date(b.due);
+      });
     }
 
     $scope.populateItems();
@@ -37,31 +42,14 @@ angular.module('todoApp')
       $scope.toDoList = $scope.hideComplete ? $scope.toDoList.filter(item => !item.completed) : $scope.toDoList;
     };
 
-    $scope.update = function(item) {
-      var newItem = angular.copy(item)
-
-      if (!newItem.description) {
-        alert('Please enter a description!');
-        return;
-      }
-
+    $scope.save = function(item) {
       var re = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
       if (newItem.due && !re.test(newItem.due)) {
         alert('Invalid date format: ' + newItem.due);
         return;
       }
 
-      newItem.key = new Date().getUTCMilliseconds();
-      newItem.due = new Date(newItem.due);
-      newItem.createdDate = new Date();
-      newItem.completed = false;
-
-      $scope.localStorageService.set(newItem.key, newItem);
-      debugger
-      $scope.toDoList.sort(function(a,b) {
-        if (new Date(a.due) === new Date(b.due)) return new Date(a.createdDate) - new Date(b.createdDate);
-        else return new Date(a.due) - new Date(b.due);
-      });
+      $scope.saveItemService.save(item);
 
       item.description = '';
       item.due = '';
