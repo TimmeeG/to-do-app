@@ -13,7 +13,7 @@
 </div>
 <div ng-show="editable">
   <div class="panel-heading" ng-class="getBackgroundColor(item)">
-    <input type="text" ng-model="item.description" value={{item.description}}></input>
+    <input type="text" ng-model="item.description" value={{item.description}} placeholder="Enter description"></input>
   </div>
   <div class="panel-body">
     <input type="text" ng-model="item.due" value="{{item.due}}" placeholder="MM/dd/yyyy"></input>

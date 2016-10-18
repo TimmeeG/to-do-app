@@ -13,6 +13,10 @@ angular.module('todoApp')
 
     $scope.currentDate = new Date();
 
+    if ($scope.item.isTemplateItem) {
+      $scope.editable = true;
+    }
+
     $scope.edit = function(item) {
       $scope.editable = true;
 
@@ -24,7 +28,7 @@ angular.module('todoApp')
       if (month.length < 2) month = '0' + month;
       if (day.length < 2) day = '0' + day;
 
-      item.due ? item.due = [month, day, year].join('/') : '';
+      item.due = item.due ? [month, day, year].join('/') : '';
     }
 
     $scope.saveItem = function(item) {

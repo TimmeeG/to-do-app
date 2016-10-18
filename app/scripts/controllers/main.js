@@ -21,6 +21,16 @@ angular.module('todoApp')
         if (new Date(a.due) === new Date(b.due)) return new Date(a.createdDate) - new Date(b.createdDate);
         else return new Date(a.due) - new Date(b.due);
       });
+
+      var itemTemplate = {
+        isTemplateItem: true,
+        key: new Date().getUTCMilliseconds(),
+        description: '',
+        completed: false,
+        due: ''
+      };
+
+      $scope.toDoList.push(itemTemplate);
     }
 
     $scope.populateItems();
@@ -37,17 +47,4 @@ angular.module('todoApp')
       $scope.populateItems();
       $scope.toDoList = $scope.hideComplete ? $scope.toDoList.filter(item => !item.completed) : $scope.toDoList;
     };
-
-    $scope.save = function(item) {
-      var re = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
-      if (item.due && !re.test(item.due)) {
-        alert('Invalid date format: ' + item.due);
-        return;
-      }
-
-      $scope.saveItemService.saveNewItem(item);
-
-      item.description = '';
-      item.due = '';
-    }
 });
