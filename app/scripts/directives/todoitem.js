@@ -10,7 +10,7 @@ angular.module('todoApp')
   .directive('toDoItem', function () {
     return {
       templateUrl: '../views/todoitem.html',
-      controller: 'ToDoItemController',
+      controller: 'ToDoItemCtrl',
       controllerAs: 'ctrl',
       restrict: 'E',
       scope: {

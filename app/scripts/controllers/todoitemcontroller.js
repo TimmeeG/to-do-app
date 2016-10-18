@@ -8,7 +8,7 @@
  * Controller of the todoApp
  */
 angular.module('todoApp')
-  .controller('ToDoItemController', function () {
+  .controller('ToDoItemCtrl', function ($scope) {
     debugger
     $scope.toggleComplete = function(item) {
       item.completed = !item.completed;

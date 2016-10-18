@@ -10,7 +10,8 @@
     <input type="checkbox" ng-model="hideComplete" ng-click="switchFilter()">
   </label>
   <div ng-repeat="item in displayList" class="panel">
-    <div class="panel-heading" ng-class="getBackgroundColor(item)">
+    <div to-do-item ng-controller="ToDoItemCtrl" item="item"></div>
+    <!--<div class="panel-heading" ng-class="getBackgroundColor(item)">
       {{item.description}}
     </div>
     <div class="panel-body">
@@ -19,7 +20,7 @@
         <button ng-click="toggleComplete(item)">Toggle Complete</button>
         <button ng-click="remove(item)">Remove From List</button>
       </div>
-    </div>
+    </div>-->
   </div>
 </div>
 
