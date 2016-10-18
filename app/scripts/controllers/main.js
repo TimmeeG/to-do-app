@@ -18,8 +18,12 @@ angular.module('todoApp')
       $scope.toDoList = $scope.saveItemService.get();
 
       $scope.toDoList.sort(function(a,b) {
-        if (new Date(a.due) === new Date(b.due)) return new Date(a.createdDate) - new Date(b.createdDate);
-        else return new Date(a.due) - new Date(b.due);
+        if (new Date(a.due) === new Date(b.due)) {
+          return new Date(a.createdDate) - new Date(b.createdDate);
+        }
+        else {
+          return new Date(a.due) - new Date(b.due);
+        }
       });
 
       var itemTemplate = {
@@ -31,7 +35,7 @@ angular.module('todoApp')
       };
 
       $scope.toDoList.push(itemTemplate);
-    }
+    };
 
     $scope.populateItems();
 

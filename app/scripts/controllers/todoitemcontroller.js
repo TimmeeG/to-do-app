@@ -20,21 +20,25 @@ angular.module('todoApp')
     $scope.edit = function(item) {
       $scope.editable = true;
 
-      var d = new Date(item.due),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      var d = new Date(item.due);
+      var month = '' + (d.getMonth() + 1);
+      var day = '' + d.getDate();
+      var year = d.getFullYear();
 
-      if (month.length < 2) month = '0' + month;
-      if (day.length < 2) day = '0' + day;
+      if (month.length < 2) {
+        month = '0' + month;
+      }
+      if (day.length < 2) {
+        day = '0' + day;
+      }
 
       item.due = item.due ? [month, day, year].join('/') : '';
-    }
+    };
 
     $scope.saveItem = function(item) {
       var re = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
       if (item.due && !re.test(item.due)) {
-        alert('Invalid date format: ' + item.due);
+        window.alert('Invalid date format: ' + item.due);
         return;
       }
 
@@ -44,7 +48,7 @@ angular.module('todoApp')
 
       item.description = '';
       item.due = '';
-    }
+    };
 
     $scope.toggleComplete = function(item) {
       item.completed = !item.completed;
@@ -56,7 +60,11 @@ angular.module('todoApp')
     };
 
     $scope.getBackgroundColor = function(item) {
-      if (item.completed) return 'completed';
-      if (new Date(item.due) < $scope.currentDate) return 'overdue';
-    }
+      if (item.completed) {
+        return 'completed';
+      }
+      if (new Date(item.due) < $scope.currentDate) {
+        return 'overdue';
+      }
+    };
   });
