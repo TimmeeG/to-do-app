@@ -10,25 +10,32 @@
 angular.module('todoApp')
   .controller('MainCtrl', function ($scope, localStorageService) {
     $scope.localStorageService = localStorageService;
-
-    $scope.currentDate = new Date();
+    //$scope.localStorageService.clearAll();
     $scope.hideComplete = false;
 
-    $scope.toDoList = $scope.localStorageService.get('toDoList');
-    if (!$scope.toDoList) $scope.toDoList = [];
+    $scope.populateItems = function() {
+      $scope.toDoList = [];
+      var keys = $scope.localStorageService.keys();
+      for (var i = 0; i < keys.length; i++) {
+        var item = $scope.localStorageService.get(keys[i]);
+        $scope.toDoList.push(item);
+      }
+    }
 
-    $scope.$watchCollection('toDoList', () => {
+    $scope.populateItems();
+
+    $scope.$on('LocalStorageModule.notification.setitem', () => {
       $scope.switchFilter();
-      $scope.localStorageService.set('toDoList', $scope.toDoList);
     });
 
-    $scope.toggleComplete = function(item) {
-      item.completed = !item.completed;
-    };
+    $scope.$on('LocalStorageModule.notification.removeitem', () => {
+      $scope.switchFilter();
+    });
 
     $scope.switchFilter = function() {
-      $scope.displayList = $scope.hideComplete ? $scope.toDoList.filter(item => !item.completed) : $scope.toDoList;
-    }
+      $scope.populateItems();
+      $scope.toDoList = $scope.hideComplete ? $scope.toDoList.filter(item => !item.completed) : $scope.toDoList;
+    };
 
     $scope.update = function(item) {
       var newItem = angular.copy(item)
@@ -39,17 +46,18 @@ angular.module('todoApp')
       }
 
       var re = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
-      if (newItem.due === '' || !re.test(newItem.due)) {
+      if (newItem.due && !re.test(newItem.due)) {
         alert('Invalid date format: ' + newItem.due);
         return;
       }
-      newItem.due = new Date(newItem.due);
 
+      newItem.key = new Date().getUTCMilliseconds();
+      newItem.due = new Date(newItem.due);
       newItem.createdDate = new Date();
       newItem.completed = false;
 
-      $scope.toDoList.push(newItem);
-
+      $scope.localStorageService.set(newItem.key, newItem);
+      debugger
       $scope.toDoList.sort(function(a,b) {
         if (new Date(a.due) === new Date(b.due)) return new Date(a.createdDate) - new Date(b.createdDate);
         else return new Date(a.due) - new Date(b.due);
@@ -57,14 +65,5 @@ angular.module('todoApp')
 
       item.description = '';
       item.due = '';
-    }
-
-    $scope.remove = function(item) {
-      $scope.toDoList = $scope.toDoList.filter(i => i !== item);
-    };
-
-    $scope.getBackgroundColor = function(item) {
-      if (item.completed) return 'completed';
-      if (new Date(item.due) < $scope.currentDate) return 'overdue';
     }
 });

@@ -8,14 +8,17 @@
  * Controller of the todoApp
  */
 angular.module('todoApp')
-  .controller('ToDoItemCtrl', function ($scope) {
-    debugger
+  .controller('ToDoItemCtrl', function ($scope, localStorageService) {
+    $scope.localStorageService = localStorageService;
+    $scope.currentDate = new Date();
+
     $scope.toggleComplete = function(item) {
       item.completed = !item.completed;
+      $scope.localStorageService.set(item.key, item)
     };
 
     $scope.remove = function(item) {
-      $scope.toDoList = $scope.toDoList.filter(i => i !== item);
+      $scope.localStorageService.remove(item.key);
     };
 
     $scope.getBackgroundColor = function(item) {

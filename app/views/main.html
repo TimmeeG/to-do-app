@@ -9,18 +9,8 @@
   <label>Hide completed items:
     <input type="checkbox" ng-model="hideComplete" ng-click="switchFilter()">
   </label>
-  <div ng-repeat="item in displayList" class="panel">
-    <div to-do-item ng-controller="ToDoItemCtrl" item="item"></div>
-    <!--<div class="panel-heading" ng-class="getBackgroundColor(item)">
-      {{item.description}}
-    </div>
-    <div class="panel-body">
-      {{item.due | date : 'MM/dd/yyyy'}}
-      <div class="pull-right">
-        <button ng-click="toggleComplete(item)">Toggle Complete</button>
-        <button ng-click="remove(item)">Remove From List</button>
-      </div>
-    </div>-->
+  <div ng-repeat="item in toDoList" class="panel">
+    <to-do-item ng-controller="ToDoItemCtrl" item="item"></to-do-item>
   </div>
 </div>
 
